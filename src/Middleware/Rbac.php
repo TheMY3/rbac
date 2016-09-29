@@ -30,7 +30,7 @@ class Rbac
         if ($this->auth->check() && $this->auth->user()->roleIs($role)) {
             return $next($request);
         }
-
+        
         if(!in_array($level, ['is', 'can']))
             abort(500, 'Invalid RBAC operator specified.');
         if('is' == $level) {

@@ -16,7 +16,7 @@ class RbacServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/database/migrations/' => base_path('/database/migrations')
-        ]);
+        ], 'migrations');
 
         Blade::directive('ifUserIs', function($expression){
             return "<?php if(Auth::check() && Auth::user()->hasRole{$expression}): ?>";

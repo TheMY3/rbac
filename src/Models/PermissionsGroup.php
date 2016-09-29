@@ -3,18 +3,18 @@
 namespace YaroslavMolchan\Rbac\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use YaroslavMolchan\Rbac\Models\PermissionsGroup;
+use YaroslavMolchan\Rbac\Models\Permission;
 use YaroslavMolchan\Rbac\Models\Role;
 
-class Permission extends Model
+class PermissionsGroup extends Model
 {
-    protected $fillable = ['slug', 'name'];
+    protected $fillable = ['name', 'module'];
 
     public function roles() {
     	return $this->belongsToMany(Role::class);
     }
 
-    public function groups() {
-    	return $this->belongsToMany(PermissionsGroup::class);
+    public function permissions() {
+    	return $this->belongsToMany(Permission::class);
     }
 }
