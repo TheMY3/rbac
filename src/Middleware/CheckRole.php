@@ -4,7 +4,7 @@ namespace YaroslavMolchan\Rbac\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
-class Rbac
+class CheckRole
 {
     private $auth;
 
@@ -25,20 +25,10 @@ class Rbac
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $level, $permission)
+    public function handle($request, Closure $next, $role)
     {
-        if ($this->auth->check() && $this->auth->user()->roleIs($role)) {
+        if ($this->auth->check() && $this->auth->user()->hasRole($role)) {
             return $next($request);
-        }
-        
-        if(!in_array($level, ['is', 'can']))
-            abort(500, 'Invalid RBAC operator specified.');
-        if('is' == $level) {
-            if($request->user()->hasRole($permission))
-                return $next($request);
-        } else {
-            if($request->user()->canDo($permission))
-                return $next($request);
         }
         abort(403);
     }

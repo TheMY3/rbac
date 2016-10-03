@@ -17,4 +17,12 @@ class Permission extends Model
     public function groups() {
     	return $this->belongsToMany(PermissionsGroup::class);
     }
+
+    public function assingRole(Role $role) {
+        $this->roles()->attach($role);
+    }
+
+    public function assingGroup(PermissionsGroup $group) {
+        $this->groups()->attach($group);
+    }
 }

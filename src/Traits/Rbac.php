@@ -8,20 +8,21 @@ trait Rbac
         return $this->belongsToMany(Role::class);
     }
 
+    public function assingRole(Role $role) {
+        $this->roles()->attach($role);
+    }
+
     /**
      * @param string $role
      * @return bool
      */
     public function hasRole($role)
     {
-        $roles = $this->roles()->lists('slug')->toArray();
-        if(false !== strpos($role, '|')) {
-            $roleArr = explode('|', $role);
-        } else {
-            $roleArr = [$role];
-        }
-        return !empty(array_intersect($roleArr, $roles));
+        $roles = $this->roles()->pluck('slug')->toArray();
+
+        return in_array($role, $roles);
     }
+
     /**
      * @param string $operation
      * @return bool
@@ -31,14 +32,10 @@ trait Rbac
         $roles = $this->roles;
         $permissions = [];
         foreach ($roles as $role) {
-            $permissions = array_merge($permissions, $role->permissions()->lists('slug')->toArray());
+            $permissions = array_merge($permissions, $role->permissionsArray());
         }
         $permissions = array_unique($permissions);
-        if(false !== strpos($operation, '|')) {
-            $operationArr = explode('|', $operation);
-        } else {
-            $operationArr = [$operation];
-        }
-        return !empty(array_intersect($operationArr, $permissions));
+
+        return in_array($operation, $permissions);
     }
 }

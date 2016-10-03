@@ -10,6 +10,10 @@ class Role extends Model
 {
     protected $fillable = ['slug', 'name'];
 
+    private function getCacheKey() {
+        return 'role_'.$this->slug;
+    }
+
     public function users() {
     	return $this->belongsToMany(config('auth.providers.users.model'));
     }
@@ -20,5 +24,40 @@ class Role extends Model
 
     public function permissionsGroups() {
     	return $this->belongsToMany(PermissionsGroup::class);
+    }
+
+    public function givePermissionTo(Permission $permission) {
+        $this->permissions()->attach($permission);
+        Cache::forget($this->getCacheKey());
+    }
+
+    public function takePermissionFrom(Permission $permission) {
+        $this->permissions()->detach($permission);
+        Cache::forget($this->getCacheKey());
+    }
+
+    public function givePermissionGroupTo(PermissionsGroup $group) {
+        $this->permissions()->attach($group);
+        foreach ($group->permissions as $permission) {
+            $this->givePermissionTo($permission);
+        }
+    }
+
+    public function takePermissionGroupFrom(PermissionsGroup $group) {
+        $this->permissions()->detach($group);
+        foreach ($group->permissions as $permission) {
+            $this->takePermissionFrom($permission);
+        }
+    }
+
+    public function permissionsArray()
+    {
+        $key = $this->getCacheKey();
+        if (false === Cache::has($key)) {
+            $permissions = $this->permissions()->pluck('slug')->toArray();
+            Cache::forever($key, $permissions);
+        }
+
+        return Cache::get($key);
     }
 }
