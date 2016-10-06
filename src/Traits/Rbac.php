@@ -1,6 +1,8 @@
 <?php
 namespace YaroslavMolchan\Rbac\Traits;
 
+use YaroslavMolchan\Rbac\Models\Role;
+
 trait Rbac
 {
     public function roles()
