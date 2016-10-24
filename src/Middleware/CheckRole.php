@@ -30,6 +30,6 @@ class CheckRole
         if ($this->auth->check() && $this->auth->user()->hasRole($role)) {
             return $next($request);
         }
-        abort(403);
+        abort(403, 'You have not permission');
     }
 }
