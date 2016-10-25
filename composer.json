@@ -1,6 +1,7 @@
 {
     "name": "yaroslavmolchan/rbac",
     "description": "Simple RBAC for Laravel 5.3",
+    "version" : "0.9.1",
     "keywords": ["laravel", "rbac", "acl"],
     "license": "MIT",
     "authors": [{

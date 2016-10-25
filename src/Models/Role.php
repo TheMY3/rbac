@@ -28,12 +28,12 @@ class Role extends Model
 
     public function givePermissionTo(Permission $permission) {
         $this->permissions()->attach($permission);
-        Cache::forget($this->getCacheKey());
+        \Cache::forget($this->getCacheKey());
     }
 
     public function takePermissionFrom(Permission $permission) {
         $this->permissions()->detach($permission);
-        Cache::forget($this->getCacheKey());
+        \Cache::forget($this->getCacheKey());
     }
 
     public function givePermissionGroupTo(PermissionsGroup $group) {
@@ -53,11 +53,11 @@ class Role extends Model
     public function permissionsArray()
     {
         $key = $this->getCacheKey();
-        if (false === Cache::has($key)) {
+        if (false === \Cache::has($key)) {
             $permissions = $this->permissions()->pluck('slug')->toArray();
-            Cache::forever($key, $permissions);
+            \Cache::forever($key, $permissions);
         }
 
-        return Cache::get($key);
+        return \Cache::get($key);
     }
 }
