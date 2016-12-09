@@ -18,11 +18,36 @@ class Permission extends Model
     	return $this->belongsToMany(PermissionsGroup::class);
     }
 
-    public function assingRole(Role $role) {
+    /**
+     * @author MY
+     * @param int|Role $role
+     */
+    public function addRole($role) {
         $this->roles()->attach($role);
     }
 
-    public function assingGroup(PermissionsGroup $group) {
+    /**
+     * @author MY
+     * @param int|Role $role
+     */
+    public function removeRole($role)
+    {
+        $this->roles()->detach($role);
+    }
+
+    /**
+     * @author MY
+     * @param int|PermissionsGroup $group
+     */
+    public function addGroup($group) {
         $this->groups()->attach($group);
+    }
+
+    /**
+     * @author MY
+     * @param int|PermissionsGroup $group
+     */
+    public function removeGroup($group) {
+        $this->groups()->detach($group);
     }
 }
