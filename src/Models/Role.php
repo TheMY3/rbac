@@ -37,14 +37,14 @@ class Role extends Model
     }
 
     public function givePermissionGroupTo(PermissionsGroup $group) {
-        $this->permissions()->attach($group);
+        $this->permissionsGroups()->attach($group);
         foreach ($group->permissions as $permission) {
             $this->givePermissionTo($permission);
         }
     }
 
     public function takePermissionGroupFrom(PermissionsGroup $group) {
-        $this->permissions()->detach($group);
+        $this->permissionsGroups()->detach($group);
         foreach ($group->permissions as $permission) {
             $this->takePermissionFrom($permission);
         }
