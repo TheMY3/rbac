@@ -13,7 +13,7 @@ class CreatePermissionPermissionsGroupTable extends Migration
      */
     public function up()
     {
-        Schema::create('permission_permissions_groups', function (Blueprint $table) {
+        Schema::create('permission_permissions_group', function (Blueprint $table) {
             $table->integer('permission_id')->unsigned();
             $table->integer('permissions_group_id')->unsigned();
             
@@ -38,6 +38,6 @@ class CreatePermissionPermissionsGroupTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permission_permissions_groups');
+        Schema::dropIfExists('permission_permissions_group');
     }
 }
