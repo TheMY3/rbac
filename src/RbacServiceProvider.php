@@ -25,14 +25,4 @@ class RbacServiceProvider extends ServiceProvider
             return "<?php if(Auth::check() && Auth::user()->canDo{$expression}): ?>";
         });
     }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
-    }
 }
