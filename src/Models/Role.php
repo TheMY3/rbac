@@ -26,12 +26,12 @@ class Role extends Model
     	return $this->belongsToMany(PermissionsGroup::class);
     }
 
-    public function givePermissionTo(Permission $permission) {
+    public function givePermissionTo($permission) {
         $this->permissions()->attach($permission);
         \Cache::forget($this->getCacheKey());
     }
 
-    public function takePermissionFrom(Permission $permission) {
+    public function takePermissionFrom($permission) {
         $this->permissions()->detach($permission);
         \Cache::forget($this->getCacheKey());
     }

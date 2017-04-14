@@ -10,8 +10,22 @@ trait Rbac
         return $this->belongsToMany(Role::class);
     }
 
-    public function assingRole(Role $role) {
+    /**
+     * Assign role to a user.
+     *
+     * @param int|Role $role
+     */
+    public function assingRole($role) {
         $this->roles()->attach($role);
+    }
+
+    /**
+     * Revoke user role.
+     *
+     * @param int|Role $role
+     */
+    public function revokeRole($role) {
+        $this->roles()->detach($role);
     }
 
     /**
