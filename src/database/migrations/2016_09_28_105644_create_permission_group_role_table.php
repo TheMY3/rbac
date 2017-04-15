@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePermissionsGroupRoleTable extends Migration
+class CreatePermissionGroupRoleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreatePermissionsGroupRoleTable extends Migration
      */
     public function up()
     {
-        Schema::create('permissions_group_role', function (Blueprint $table) {
-            $table->integer('permissions_group_id')->unsigned();
+        Schema::create('permission_group_role', function (Blueprint $table) {
+            $table->integer('permission_group_id')->unsigned();
             $table->integer('role_id')->unsigned();
             
-            $table->foreign('permissions_group_id')
+            $table->foreign('permission_group_id')
                 ->references('id')
-                ->on('permissions_groups')
+                ->on('permission_groups')
                 ->onDelete('cascade');
 
             $table->foreign('role_id')
@@ -27,7 +27,7 @@ class CreatePermissionsGroupRoleTable extends Migration
                 ->on('roles')
                 ->onDelete('cascade');
 
-            $table->primary(['permissions_group_id', 'role_id']);
+            $table->primary(['permission_group_id', 'role_id']);
         });
     }
 
@@ -38,6 +38,6 @@ class CreatePermissionsGroupRoleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permissions_group_role');
+        Schema::dropIfExists('permission_group_role');
     }
 }

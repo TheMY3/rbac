@@ -3,7 +3,8 @@
 namespace YaroslavMolchan\Rbac\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use YaroslavMolchan\Rbac\Models\PermissionsGroup;
+use Illuminate\Database\QueryException;
+use YaroslavMolchan\Rbac\Models\PermissionGroup;
 use YaroslavMolchan\Rbac\Models\Role;
 
 class Permission extends Model
@@ -15,39 +16,44 @@ class Permission extends Model
     }
 
     public function groups() {
-    	return $this->belongsToMany(PermissionsGroup::class);
+    	return $this->belongsToMany(PermissionGroup::class);
     }
 
     /**
-     * @author MY
-     * @param int|Role $role
+     * @param int|PermissionGroup $group
      */
-    public function addRole($role) {
-        $this->roles()->attach($role);
-    }
+    public function attachGroup($group) {
+        if (!($group instanceof PermissionGroup) && ctype_digit($group)) {
+            $group = PermissionGroup::find($group);
+        }
 
-    /**
-     * @author MY
-     * @param int|Role $role
-     */
-    public function removeRole($role)
-    {
-        $this->roles()->detach($role);
-    }
-
-    /**
-     * @author MY
-     * @param int|PermissionsGroup $group
-     */
-    public function addGroup($group) {
         $this->groups()->attach($group);
+
+        foreach ($group->roles as $role) {
+            /** @var Role $role */
+            try {
+                $role->attachPermission($this);
+            }
+            catch (QueryException $e) {
+                //Catch "UNIQUE constraint failed" exceptions, may be groups with the same permissions
+                //And when it happens we get error, but now we skip it and continue working
+            }
+        }
     }
 
     /**
-     * @author MY
-     * @param int|PermissionsGroup $group
+     * @param int|PermissionGroup $group
      */
-    public function removeGroup($group) {
+    public function detachGroup($group) {
+        if (!($group instanceof PermissionGroup) && ctype_digit($group)) {
+            $group = PermissionGroup::find($group);
+        }
+
         $this->groups()->detach($group);
+
+        foreach ($group->roles as $role) {
+            /** @var Role $role */
+            $role->detachPermission($this);
+        }
     }
 }

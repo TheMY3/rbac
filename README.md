@@ -1,5 +1,23 @@
 # Laravel RBAC
-Simple RBAC/ACL for Laravel 5.3 and more with caching and permission groups.
+Simple RBAC/ACL for Laravel 5.3 and more with caching permissions and permission groups for better convenience.
+
+- [Installation](#installation)
+- [Usage](#usage)
+    - Roles
+        - [Creating Roles](#creating-roles)
+        - [Attaching And Detaching Roles](#attaching-and-detaching-roles)
+        - [Checking For Roles](#checking-for-roles)
+    - Permissions
+        - [Creating Permissions](#creating-permissions)
+        - [Attaching And Detaching Permissions](#attaching-and-detaching-permissions)
+        - [Checking For Permissions](#checking-for-permissions)
+    - Permission groups
+        - [Creating Permission groups](#creating-permission-groups)
+        - [Attaching And Detaching Permissions to Permission group](#attaching-and-detaching-permissions-to-permission-group)
+        - [Attaching And Detaching Permission groups to Role](#attaching-and-detaching-permission-groups-to-role)
+    - [Protected routes](#protected-routes)
+    - [Blade Extensions](#blade-extensions)
+- [License](#license)
 
 ## Installation
 
@@ -14,7 +32,7 @@ or you can add to your `composer.json`
 ```
 "require": {
     ...
-    "yaroslavmolchan/rbac": "^0.9"
+    "yaroslavmolchan/rbac": "^1.0"
 }
 ```
 
@@ -59,7 +77,7 @@ Add Rbac trait to your `User` model
 
 ```php
 use \YaroslavMolchan\Rbac\Traits\Rbac;
-	
+
 class User extends Authenticatable
 {
     use Rbac;
@@ -95,18 +113,18 @@ You can simple attach role to user:
 use App\User;
 
 $user = User::find(1);
-$user->assingRole($adminRole);
+$user->attachRole($adminRole);
 //or you can insert only id
-$user->assingRole($adminRole->id);
+$user->attachRole($adminRole->id);
 ```
 And the same if you want to detach role:
 ```php
 use App\User;
 
 $user = User::find(1);
-$user->revokeRole($adminRole);
+$user->detachRole($adminRole);
 //or you can insert only id
-$user->revokeRole($adminRole->id);
+$user->detachRole($adminRole->id);
 ```
 ### Checking for roles
 
@@ -145,19 +163,37 @@ You can attach permission to role very simple:
 use \YaroslavMolchan\Rbac\Models\Role;
 
 $adminRole = Role::find(1);
-$adminRole->givePermissionTo($createPermission);
+$adminRole->attachPermission($createPermission);
 //or you can insert only id
-$adminRole->givePermissionTo($createPermission->id);
+$adminRole->attachPermission($createPermission->id);
 ```
 And the same to detach permission:
 ```php
 use \YaroslavMolchan\Rbac\Models\Role;
 
 $adminRole = Role::find(1);
-$adminRole->takePermissionGroupFrom($createPermission);
+$adminRole->detachPermission($createPermission);
 //or you can insert only id
-$adminRole->takePermissionGroupFrom($createPermission->id);
+$adminRole->detachPermission($createPermission->id);
 ```
+If you want attach or detach array of permissions you can do it:
+```php
+use \YaroslavMolchan\Rbac\Models\Role;
+
+$adminRole = Role::find(1);
+$adminRole->attachPermissions([$createPermission, $removePermission]);
+//or you can insert only id
+$adminRole->detachPermission([$createPermission->id, $removePermission->id]);
+```
+```php
+use \YaroslavMolchan\Rbac\Models\Role;
+
+$adminRole = Role::find(1);
+$adminRole->detachPermissions([$createPermission, $removePermission]);
+//or you can insert only id
+$adminRole->detachPermissions([$createPermission->id, $removePermission->id]);
+```
+
 ### Checking for permissions
 
 You can simple check if user has permission:
@@ -178,50 +214,50 @@ Permission groups created for group some permissions in one main group, and then
 #### Creating permission groups
 
 ```php
-use \YaroslavMolchan\Rbac\Models\PermissionsGroup;
+use \YaroslavMolchan\Rbac\Models\PermissionGroup;
 
-$productManagementPermissionsGroup = PermissionsGroup::create([
+$productManagementPermissionGroup = PermissionGroup::create([
     'name' => 'Product management',
     'module' => 'main' // optional
 ]);
 ```
 
-#### Add and Remove permissions to group
+#### Attaching And Detaching Permissions to Permission group
 
 You can add permission to group very simple:
 ```php
 use \YaroslavMolchan\Rbac\Models\Permission;
 
 $createPermission = Permission::find(1);
-$productManagementPermissionsGroup->addPermission($createPermission);
+$productManagementPermissionGroup->attachPermission($createPermission);
 //or you can insert only id
-$productManagementPermissionsGroup->addPermission($createPermission->id);
+$productManagementPermissionGroup->attachPermission($createPermission->id);
 ```
 And the same to remove permission from group:
 ```php
 use \YaroslavMolchan\Rbac\Models\Permission;
 
 $createPermission = Permission::find(1);
-$productManagementPermissionsGroup->removePermission($createPermission);
+$productManagementPermissionGroup->detachPermission($createPermission);
 //or you can insert only id
-$productManagementPermissionsGroup->removePermission($createPermission->id);
+$productManagementPermissionGroup->detachPermission($createPermission->id);
 ```
 
-#### Attaching And Detaching permission groups to role
+#### Attaching And Detaching Permission groups to Role
 
 You can attach permission group to role very simple:
 ```php
 use \YaroslavMolchan\Rbac\Models\Role;
 
 $adminRole = Role::find(1);
-$adminRole->givePermissionGroupTo($productManagementPermissionsGroup);
+$adminRole->attachGroup($productManagementPermissionGroup);
 ```
 And the same to detach permission group:
 ```php
 use \YaroslavMolchan\Rbac\Models\Role;
 
 $adminRole = Role::find(1);
-$adminRole->takePermissionGroupFrom($productManagementPermissionsGroup);
+$adminRole->detachGroup($productManagementPermissionGroup);
 ```
 
 ### Protected routes
