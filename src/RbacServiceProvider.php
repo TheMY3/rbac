@@ -19,10 +19,10 @@ class RbacServiceProvider extends ServiceProvider
         ], 'migrations');
 
         Blade::directive('ifUserIs', function($expression){
-            return "<?php if(Auth::check() && Auth::user()->hasRole{$expression}): ?>";
+            return "<?php if(Auth::check() && Auth::user()->hasRole({$expression})): ?>";
         });
         Blade::directive('ifUserCan', function($expression){
-            return "<?php if(Auth::check() && Auth::user()->canDo{$expression}): ?>";
+            return "<?php if(Auth::check() && Auth::user()->canDo({$expression})): ?>";
         });
     }
 

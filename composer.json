@@ -1,7 +1,7 @@
 {
     "name": "yaroslavmolchan/rbac",
     "description": "Simple RBAC/ACL for Laravel 5.3 and more with caching and permission groups.",
-    "version" : "0.9.8",
+    "version" : "0.9.9",
     "keywords": ["laravel", "rbac", "acl"],
     "license": "MIT",
     "authors": [{
