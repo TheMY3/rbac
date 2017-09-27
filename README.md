@@ -1,5 +1,5 @@
 # Laravel RBAC
-Simple RBAC/ACL for Laravel 5.3 and more with caching permissions and permission groups for better convenience.
+Simple RBAC/ACL for Laravel 5.5 and more with caching permissions and permission groups for better convenience.
 
 - [Installation](#installation)
 - [Usage](#usage)
