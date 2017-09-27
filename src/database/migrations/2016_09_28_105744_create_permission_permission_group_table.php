@@ -17,12 +17,12 @@ class CreatePermissionPermissionGroupTable extends Migration
             $table->integer('permission_id')->unsigned();
             $table->integer('permission_group_id')->unsigned();
             
-            $table->foreign('permission_id')
+            $table->foreign('permission_id', 'pp_group_p_id_p_id_primary')
                 ->references('id')
                 ->on('permissions')
                 ->onDelete('cascade');
 
-            $table->foreign('permission_group_id')
+            $table->foreign('permission_group_id', 'pp_group_p_id_pg_id_primary')
                 ->references('id')
                 ->on('permission_groups')
                 ->onDelete('cascade');
