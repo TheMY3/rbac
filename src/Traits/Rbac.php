@@ -25,7 +25,18 @@ trait Rbac
     public function detachRole($role) {
         $this->roles()->detach($role);
     }
-
+ /**
+     * Detach all role from user.
+     * @param empty
+     * 
+     */
+    public function detachAllRole() {
+        $roles = $this->roles()->get();
+        foreach ($roles as $key => $value) {
+            # code...
+            $this->roles()->detach($value['id']);
+        }
+    }
     /**
      * Check if user has current role
      * @param string $slug
