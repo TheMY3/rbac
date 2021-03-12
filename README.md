@@ -27,7 +27,15 @@ Install this package with composer using the following command:
 composer require yaroslavmolchan/rbac
 ```
 
-or you can add to your `composer.json`
+or you can add to your `composer.json` for Laravel 8.0
+
+```
+"require": {
+    ...
+    "yaroslavmolchan/rbac": "^2.0"
+}
+```
+or if you use Laravel 5.5 use:
 
 ```
 "require": {
@@ -35,7 +43,6 @@ or you can add to your `composer.json`
     "yaroslavmolchan/rbac": "^1.0"
 }
 ```
-
 then run `composer update`.
 
 Add Service Provider to `providers` array in `config/app.php` file.
