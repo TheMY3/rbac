@@ -14,14 +14,15 @@ class RbacServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->publishes([
-            __DIR__ . '/database/migrations/' => base_path('/database/migrations')
+            __DIR__ . '/../database/migrations/' => base_path('/database/migrations')
         ], 'migrations');
 
-        Blade::directive('ifUserIs', function($expression){
+        Blade::directive('ifUserIs', function ($expression) {
             return "<?php if(Auth::check() && Auth::user()->hasRole({$expression})): ?>";
         });
-        Blade::directive('ifUserCan', function($expression){
+        Blade::directive('ifUserCan', function ($expression) {
             return "<?php if(Auth::check() && Auth::user()->canDo({$expression})): ?>";
         });
     }
